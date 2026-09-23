@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rafter Calculator — AncientFrame</title>
+<meta name="description" content="Calculate rafter length, rise, run, pitch and roof angle from feet, inches and common pitch measurements.">
+<link rel="canonical" href="https://www.ancientframe.com/calculators/rafter.html">
+<meta property="og:title" content="Rafter Calculator — AncientFrame"><meta property="og:description" content="Calculate rafter geometry from the measurements you already have."><meta property="og:type" content="website">
+<link rel="stylesheet" href="../css/main.css"></head><body><header class="site-header"></header><main>
+<section class="calculator-shell">
+<div class="calculator-intro"><p class="eyebrow">Roof framing</p><h1>Rafter Calculator</h1>
+<p>Start with the measurements you know. AncientFrame can calculate the missing <strong>run, rise, or rafter length</strong> when the pitch is known.</p></div>
+<div class="calculator-card" id="rafterCard">
+<form id="rafterForm" novalidate>
+<label style="display:block;margin-bottom:12px;font-size:13px;font-weight:600">What do you know?</label>
+<div class="mode-picker" role="radiogroup" aria-label="Rafter calculation mode">
+<label><input type="radio" name="mode" value="runrise" checked><span>Run + Rise</span></label>
+<label><input type="radio" name="mode" value="pitchrun"><span>Pitch + Run</span></label>
+<label><input type="radio" name="mode" value="pitchrise"><span>Pitch + Rise</span></label>
+<label><input type="radio" name="mode" value="pitchlength"><span>Pitch + Rafter</span></label>
+</div>
+<div id="rafterInputs" class="input-grid">
+<label>Run<input name="run" placeholder="12' 0&quot;" inputmode="decimal"><small>Horizontal distance</small></label>
+<label>Rise<input name="rise" placeholder="8' 0&quot;" inputmode="decimal"><small>Vertical distance</small></label>
+<label>Pitch<input name="pitch" placeholder="8/12" inputmode="decimal"><small>Example: 8/12 or 0.6667/12</small></label>
+<label>Rafter length<input name="length" placeholder="14' 5 1/2&quot;" inputmode="decimal"><small>Diagonal length</small></label>
+</div>
+<button class="button" type="submit">Calculate rafter <span>→</span></button>
+<div id="rafterError" class="form-error" role="alert"></div>
+</form>
+<div id="rafterResults" class="results-panel" hidden></div>
+<div id="rafterDiagram" class="calc-diagram" hidden aria-label="Rafter geometry diagram"></div>
+<button id="saveRafter" class="button button-secondary" hidden>Save measurement</button>
+<p class="calculation-note">Results are displayed to the nearest 1/16". Underlying calculations use the entered values before display rounding.</p>
+</div></section></main><footer class="site-footer"></footer>
+<script src="../js/data.js"></script><script src="../js/main.js"></script><script src="../js/calculators.js"></script></body></html>
