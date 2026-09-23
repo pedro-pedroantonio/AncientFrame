@@ -27,59 +27,94 @@ function parsePitch(v){
  const n=parseFloat(s);
  return Number.isFinite(n)?n/12:NaN;
 }
+function fractionToDecimal(value){
+  if(value===undefined||value===null||String(value).trim()==="") return 0;
+  const s=String(value).trim();
+  const fractionMatch=s.match(/^\s*(\d+)\s*\/\s*(\d+)\s*$/);
+  if(fractionMatch){
+    const numerator=parseFloat(fractionMatch[1]);
+    const denominator=parseFloat(fractionMatch[2]);
+    if(denominator>0) return numerator/denominator;
+  }
+  const simple=parseFloat(s);
+  if(Number.isFinite(simple)) return simple;
+  return 0;
+}
+function dimensionFromFields(feetField,inchesField,fractionField){
+  const feet=Number(feetField&&feetField.value?feetField.value:0)||0;
+  const inches=Number(inchesField&&inchesField.value?inchesField.value:0)||0;
+  const fraction=fractionToDecimal(fractionField&&fractionField.value?fractionField.value:0);
+  return feet*12 + inches + fraction;
+}
+function isDimensionFilled(fieldSet){
+  return fieldSet.some(el=>{
+    if(!el) return false;
+    return el.value!==undefined && el.value!==null && String(el.value).trim()!=="";
+  });
+}
 function setRafterFields(mode){
  const f=document.getElementById("rafterForm"); if(!f)return;
- ["run","rise","pitch","length"].forEach(n=>{const el=f.querySelector(`[name="${n}"]`); if(el){el.disabled=false;el.required=false}});
- const disable=(names)=>names.forEach(n=>{const el=f.querySelector(`[name="${n}"]`);if(el)el.disabled=true});
- if(mode==="runrise"){disable(["pitch","length"]);f.run.required=true;f.rise.required=true}
- if(mode==="pitchrun"){disable(["rise","length"]);f.pitch.required=true;f.run.required=true}
- if(mode==="pitchrise"){disable(["run","length"]);f.pitch.required=true;f.rise.required=true}
- if(mode==="pitchlength"){disable(["run","rise"]);f.pitch.required=true;f.length.required=true}
+ const groups={
+  run:[f.runFeet,f.runInches,f.runFraction],
+  rise:[f.riseFeet,f.riseInches,f.riseFraction],
+  pitch:[f.pitch],
+  length:[f.lengthFeet,f.lengthInches,f.lengthFraction]
+ };
+ Object.values(groups).forEach(fields=>fields.forEach(el=>{if(el){el.disabled=false;el.required=false}}));
+ const disable=(names)=>names.forEach(n=>{const fields=groups[n]||[];fields.forEach(el=>{if(el){el.disabled=true}})});
+ if(mode==="runrise"){disable(["pitch","length"]);groups.run.forEach(el=>{if(el)el.required=true});groups.rise.forEach(el=>{if(el)el.required=true})}
+ if(mode==="pitchrun"){disable(["rise","length"]);groups.pitch.forEach(el=>{if(el)el.required=true});groups.run.forEach(el=>{if(el)el.required=true})}
+ if(mode==="pitchrise"){disable(["run","length"]);groups.pitch.forEach(el=>{if(el)el.required=true});groups.rise.forEach(el=>{if(el)el.required=true})}
+ if(mode==="pitchlength"){disable(["run","rise"]);groups.pitch.forEach(el=>{if(el)el.required=true});groups.length.forEach(el=>{if(el)el.required=true})}
 }
 function rafterDiagram(run,rise){
- const w=620,h=320,p=55,maxX=Math.max(run,1),maxY=Math.max(rise,1);
- const x2=w-p,yBase=h-48,x1=p,yTop=Math.max(38,yBase-(rise/maxX)*((x2-x1)*.82)),ridgeX=(x1+x2)/2;
- const scale=(x2-x1)/maxX/2, leftX=ridgeX-run*scale, rightX=ridgeX+run*scale;
- const topY=yBase-rise*scale;
- return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Rafter triangle showing run, rise and rafter length">
- <line x1="${leftX}" y1="${yBase}" x2="${rightX}" y2="${yBase}" class="diagram-dim"/>
- <line x1="${leftX}" y1="${yBase+10}" x2="${leftX}" y2="${yBase-10}" class="diagram-tick"/>
- <line x1="${rightX}" y1="${yBase+10}" x2="${rightX}" y2="${yBase-10}" class="diagram-tick"/>
- <text x="${(leftX+rightX)/2}" y="${yBase+28}" text-anchor="middle" class="diagram-label">${fmtInches(round16(run))} run</text>
- <line x1="${ridgeX}" y1="${topY}" x2="${ridgeX}" y2="${yBase}" class="diagram-dim"/>
- <line x1="${ridgeX-10}" y1="${topY}" x2="${ridgeX+10}" y2="${topY}" class="diagram-tick"/>
- <line x1="${ridgeX-10}" y1="${yBase}" x2="${ridgeX+10}" y2="${yBase}" class="diagram-tick"/>
- <text x="${ridgeX+16}" y="${(topY+yBase)/2}" class="diagram-label">${fmtInches(round16(rise))} rise</text>
- <line x1="${leftX}" y1="${yBase}" x2="${ridgeX}" y2="${topY}" class="diagram-line diagram-draw"/>
- <line x1="${ridgeX}" y1="${topY}" x2="${rightX}" y2="${yBase}" class="diagram-line diagram-draw"/>
- <circle cx="${ridgeX}" cy="${topY}" r="5" class="diagram-accent"/>
- <text x="${ridgeX}" y="${Math.max(20,topY-13)}" text-anchor="middle" class="diagram-label">RIDGE</text>
+ const w=620,h=320;
+ const leftX=55, rightX=565, baseY=245, ridgeY=65;
+ const labels=localStorage.getItem("ancientframe_lang")==="es"?{run:"corrida",rise:"elevación",ridge:"CUMBRERA"}:{run:"run",rise:"rise",ridge:"RIDGE"};
+ const rafterLength=Math.hypot(run,rise);
+ const rafterMidX=(leftX+rightX)/2;
+ const rafterMidY=(ridgeY+baseY)/2;
+ return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Rafter measurements showing run, rise and ridge">
+ <line x1="${leftX}" y1="${ridgeY+20}" x2="${leftX}" y2="${baseY}" class="diagram-dim"/>
+ <line x1="${leftX}" y1="${baseY}" x2="${rightX}" y2="${baseY}" class="diagram-dim"/>
+ <line x1="${leftX}" y1="${ridgeY}" x2="${rightX}" y2="${baseY}" class="diagram-line diagram-draw"/>
+ <line x1="${leftX-18}" y1="${ridgeY}" x2="${leftX+18}" y2="${ridgeY}" class="diagram-tick"/>
+ <line x1="${rightX}" y1="${baseY-18}" x2="${rightX}" y2="${baseY+18}" class="diagram-tick"/>
+ <circle cx="${leftX}" cy="${ridgeY}" r="10" class="diagram-accent"/>
+ <text x="${leftX-2}" y="${ridgeY-25}" text-anchor="middle" class="diagram-label">${labels.ridge}</text>
+ <text x="${leftX+48}" y="${(ridgeY+baseY)/2+8}" class="diagram-label">${fmtInches(round16(rise))} ${labels.rise}</text>
+ <text x="${(leftX+rightX)/2}" y="${baseY+42}" text-anchor="middle" class="diagram-label">${fmtInches(round16(run))} ${labels.run}</text>
+ <text x="${rafterMidX+18}" y="${rafterMidY-12}" class="diagram-label">${fmtInches(round16(rafterLength))} ${localStorage.getItem("ancientframe_lang")==="es"?"largo de viga":"rafter length"}</text>
  </svg>`;
 }
 function setupRafter(){
  const f=document.getElementById("rafterForm");if(!f)return;
  const card=document.getElementById("rafterCard");
+ document.addEventListener("ancientframe-language-change",()=>{const diagram=document.getElementById("rafterDiagram");if(diagram&&!diagram.hidden){const run=dimensionFromFields(f.runFeet,f.runInches,f.runFraction);const rise=dimensionFromFields(f.riseFeet,f.riseInches,f.riseFraction);if(run>0&&rise>=0)diagram.innerHTML=rafterDiagram(run,rise)}});
  f.querySelectorAll('input[name="mode"]').forEach(r=>r.addEventListener("change",()=>setRafterFields(r.value)));
  setRafterFields("runrise");
  f.onsubmit=e=>{
    e.preventDefault(); card.classList.add("calculating");
    setTimeout(()=>card.classList.remove("calculating"),650);
    const mode=f.querySelector('input[name="mode"]:checked').value;
-   let run=parseMeasure(f.run.value),rise=parseMeasure(f.rise.value),length=parseMeasure(f.length.value),ratio=parsePitch(f.pitch.value);
+   const run=dimensionFromFields(f.runFeet,f.runInches,f.runFraction);
+   const rise=dimensionFromFields(f.riseFeet,f.riseInches,f.riseFraction);
+   const length=dimensionFromFields(f.lengthFeet,f.lengthInches,f.lengthFraction);
+   let runValue=run,riseValue=rise,lengthValue=length,ratio=parsePitch(f.pitch.value);
    const err=document.getElementById("rafterError"),res=document.getElementById("rafterResults"),diagram=document.getElementById("rafterDiagram");
-   if(mode==="runrise"){if(!(run>0&&rise>=0)){err.textContent="Enter a valid positive run and rise.";return}length=Math.hypot(run,rise);ratio=rise/run}
-   if(mode==="pitchrun"){if(!(ratio>0&&run>0)){err.textContent="Enter a valid pitch and run. Example pitch: 8/12.";return}rise=run*ratio;length=Math.hypot(run,rise)}
-   if(mode==="pitchrise"){if(!(ratio>0&&rise>0)){err.textContent="Enter a valid pitch and rise. Example pitch: 8/12.";return}run=rise/ratio;length=Math.hypot(run,rise)}
-   if(mode==="pitchlength"){if(!(ratio>0&&length>0)){err.textContent="Enter a valid pitch and rafter length.";return}run=length/Math.sqrt(1+ratio*ratio);rise=run*ratio}
+   if(mode==="runrise"){if(!(runValue>0&&riseValue>=0)){err.textContent="Enter a valid positive run and rise.";return}lengthValue=Math.hypot(runValue,riseValue);ratio=riseValue/runValue}
+   if(mode==="pitchrun"){if(!(ratio>0&&runValue>0)){err.textContent="Enter a valid pitch and run. Example pitch: 8/12.";return}riseValue=runValue*ratio;lengthValue=Math.hypot(runValue,riseValue)}
+   if(mode==="pitchrise"){if(!(ratio>0&&riseValue>0)){err.textContent="Enter a valid pitch and rise. Example pitch: 8/12.";return}runValue=riseValue/ratio;lengthValue=Math.hypot(runValue,riseValue)}
+   if(mode==="pitchlength"){if(!(ratio>0&&lengthValue>0)){err.textContent="Enter a valid pitch and rafter length.";return}runValue=lengthValue/Math.sqrt(1+ratio*ratio);riseValue=runValue*ratio}
    err.textContent="";
-   const angle=Math.atan2(rise,run)*180/Math.PI,pitch12=ratio*12;
+   const angle=Math.atan2(riseValue,runValue)*180/Math.PI,pitch12=ratio*12;
    res.hidden=false;
    res.innerHTML=resultHTML([
-    ["Run",fmtInches(round16(run))],["Rise",fmtInches(round16(rise))],["Rafter length",fmtInches(round16(length))],
+    ["Run",fmtInches(round16(runValue))],["Rise",fmtInches(round16(riseValue))],["Rafter length",fmtInches(round16(lengthValue))],
     ["Pitch",pitch12.toFixed(4)+" / 12"],["Roof angle",angle.toFixed(4)+"°"]
    ]);
-   diagram.hidden=false;diagram.innerHTML=rafterDiagram(run,rise);
-   wireSave("saveRafter","Rafter",{run:fmtInches(run),rise:fmtInches(rise),length:fmtInches(round16(length)),angle:angle.toFixed(4)+"°",pitch:pitch12.toFixed(4)+"/12"});
+   diagram.hidden=false;diagram.innerHTML=rafterDiagram(runValue,riseValue);
+   wireSave("saveRafter","Rafter",{run:fmtInches(runValue),rise:fmtInches(riseValue),length:fmtInches(round16(lengthValue)),angle:angle.toFixed(4)+"°",pitch:pitch12.toFixed(4)+"/12"});
  };
 }
 function setupStairs(){const f=document.getElementById("stairsForm");if(!f)return;f.onsubmit=e=>{e.preventDefault();const rise=parseMeasure(f.rise.value),n=parseInt(f.risers.value,10),t=parseMeasure(f.tread.value),err=document.getElementById("stairsError"),res=document.getElementById("stairsResults");if(!(rise>0&&n>1&&t>0)){err.textContent="Enter a valid total rise, riser count and tread depth.";return}err.textContent="";const rh=rise/n,totalRun=t*(n-1),stringer=Math.hypot(rise,totalRun),ang=Math.atan2(rise,totalRun)*180/Math.PI;res.hidden=false;res.innerHTML=resultHTML([["Riser height",fmtInches(round16(rh))],["Tread depth",fmtInches(round16(t))],["Total run",fmtInches(round16(totalRun))],["Stringer length",fmtInches(round16(stringer))],["Stringer angle",ang.toFixed(4)+"°"],["Risers",n]]);wireSave("saveStairs","Stairs",{totalRise:fmtInches(rise),risers:n,riserHeight:fmtInches(round16(rh)),tread:fmtInches(t),totalRun:fmtInches(round16(totalRun)),stringer:fmtInches(round16(stringer))})}}

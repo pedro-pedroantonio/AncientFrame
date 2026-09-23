@@ -1,0 +1,97 @@
+<svg width="1200" height="820" viewBox="0 0 1200 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="600" y1="0" x2="600" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B7D7F0"/>
+      <stop offset="1" stop-color="#A5CCE8"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#DDB481"/>
+      <stop offset="0.4" stop-color="#C58E4D"/>
+      <stop offset="1" stop-color="#8D5C2B"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#CFB089"/>
+      <stop offset="1" stop-color="#8E6647"/>
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#34566A" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="820" fill="url(#sky)"/>
+
+  <g opacity="0.38">
+    <circle cx="1040" cy="120" r="90" fill="#DCEAF8"/>
+    <circle cx="225" cy="150" r="70" fill="#D1E6F6"/>
+  </g>
+
+  <g opacity="0.34">
+    <path d="M0 620C160 600 210 560 290 560C370 560 430 620 515 620C598 620 620 580 707 579C820 577 840 645 920 650C1020 657 1080 620 1200 610V820H0V620Z" fill="#5E8F5A"/>
+    <path d="M0 650C150 632 220 660 300 660C430 660 480 630 550 630C630 630 700 688 810 686C930 684 1000 630 1200 640V820H0V650Z" fill="#4A7A4A"/>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <path d="M110 610L510 325L885 610H110Z" fill="url(#wood)"/>
+    <path d="M205 610L510 415L820 610H205Z" fill="#E8C38D" opacity="0.55"/>
+    <path d="M380 610L510 500L640 610H380Z" fill="#F4D9A8" opacity="0.52"/>
+
+    <path d="M150 610H885V680H150V610Z" fill="url(#wood)"/>
+    <path d="M180 680H855V760H180V680Z" fill="#B36F33" opacity="0.9"/>
+    <path d="M255 680H825V760H255V680Z" fill="#D2A469" opacity="0.82"/>
+    <path d="M130 680H458V760H130V680Z" fill="#9D5A2D" opacity="0.8"/>
+    <path d="M742 680H1070V760H742V680Z" fill="#9D5A2D" opacity="0.8"/>
+
+    <g opacity="0.7">
+      <path d="M220 610V680H270V610H220Z" fill="#E1B87D"/>
+      <path d="M295 610V680H345V610H295Z" fill="#E1B87D"/>
+      <path d="M370 610V680H420V610H370Z" fill="#E1B87D"/>
+      <path d="M445 610V680H495V610H445Z" fill="#E1B87D"/>
+      <path d="M565 610V680H615V610H565Z" fill="#E1B87D"/>
+      <path d="M640 610V680H690V610H640Z" fill="#E1B87D"/>
+      <path d="M715 610V680H765V610H715Z" fill="#E1B87D"/>
+      <path d="M790 610V680H840V610H790Z" fill="#E1B87D"/>
+    </g>
+  </g>
+
+  <g stroke="#F5F1E8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M110 610L510 325L885 610"/>
+    <path d="M510 325V610"/>
+    <path d="M110 610H885"/>
+    <path d="M170 610V730"/>
+    <path d="M850 610V730"/>
+  </g>
+
+  <g font-family="Arial, sans-serif" font-weight="700" fill="#F5F1E8">
+    <text x="560" y="265" font-size="32" transform="rotate(-34 560 265)" text-anchor="middle">Length</text>
+    <text x="1000" y="430" font-size="32" transform="rotate(90 1000 430)" text-anchor="middle">Rise</text>
+    <text x="610" y="705" font-size="32" text-anchor="middle">Run</text>
+    <text x="90" y="750" font-size="32" text-anchor="end">Overhang</text>
+    <text x="580" y="505" font-size="32" transform="rotate(-34 580 505)" text-anchor="middle">Pitch</text>
+  </g>
+
+  <g stroke="#F5F1E8" stroke-width="8" stroke-linecap="round">
+    <path d="M110 610L510 610"/>
+    <path d="M500 610L500 325"/>
+    <path d="M515 325L885 610"/>
+    <path d="M110 610L170 610"/>
+    <path d="M850 610L885 610"/>
+  </g>
+
+  <g stroke="#F5F1E8" stroke-width="6" marker-end="url(#arrowhead)" opacity="0.9">
+    <path d="M110 610L410 610"/>
+    <path d="M510 325L510 610"/>
+    <path d="M510 325L785 610"/>
+    <path d="M170 610L170 720"/>
+  </g>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="14" markerHeight="14" refX="10" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10V0Z" fill="#F5F1E8"/>
+    </marker>
+  </defs>
+
+  <g opacity="0.35">
+    <path d="M220 610L1000 610" stroke="#F5F1E8" stroke-width="4" stroke-dasharray="18 18"/>
+    <path d="M510 325L510 610" stroke="#F5F1E8" stroke-width="4" stroke-dasharray="18 18"/>
+  </g>
+</svg>
