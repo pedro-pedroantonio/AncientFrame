@@ -14,7 +14,7 @@
 <label><input type="radio" name="mode" value="runrise" checked><span>Run + Rise</span></label>
 <label><input type="radio" name="mode" value="pitchrun"><span>Pitch + Run</span></label>
 <label><input type="radio" name="mode" value="pitchrise"><span>Pitch + Rise</span></label>
-<label><input type="radio" name="mode" value="pitchlength"><span>Pitch + Rafter</span></label>
+<label><input type="radio" name="mode" value="pitchlength"><span>Pitch + Rafter Length</span></label>
 </div>
 <div id="rafterInputs" class="input-grid">
   <div class="measurement-group">
@@ -22,7 +22,7 @@
     <div class="dimension-fields">
       <label><span>Feet</span><input type="number" name="runFeet" min="0" step="1" placeholder="12"></label>
       <label><span>Inches</span><input type="number" name="runInches" min="0" max="11" step="1" placeholder="0"></label>
-      <label><span>Fraction</span><input type="text" name="runFraction" placeholder="1/2" inputmode="decimal"></label>
+      <label><span>Fraction</span><input type="text" name="runFraction" placeholder="1/2" inputmode="text" autocomplete="off"></label>
     </div>
     <small>Horizontal distance</small>
   </div>
@@ -31,14 +31,14 @@
     <div class="dimension-fields">
       <label><span>Feet</span><input type="number" name="riseFeet" min="0" step="1" placeholder="8"></label>
       <label><span>Inches</span><input type="number" name="riseInches" min="0" max="11" step="1" placeholder="0"></label>
-      <label><span>Fraction</span><input type="text" name="riseFraction" placeholder="1/2" inputmode="decimal"></label>
+      <label><span>Fraction</span><input type="text" name="riseFraction" placeholder="1/2" inputmode="text" autocomplete="off"></label>
     </div>
     <small>Vertical distance</small>
   </div>
   <div class="measurement-group">
     <label class="field-label">Pitch</label>
     <div class="dimension-fields single-field">
-      <label class="full-width"><span>Ratio</span><input type="text" name="pitch" placeholder="8/12" inputmode="decimal"></label>
+      <label class="full-width"><span>Ratio</span><input type="text" name="pitch" placeholder="8/12" inputmode="text" autocomplete="off"></label>
     </div>
     <small>Example: 8/12</small>
   </div>
@@ -47,7 +47,7 @@
     <div class="dimension-fields">
       <label><span>Feet</span><input type="number" name="lengthFeet" min="0" step="1" placeholder="14"></label>
       <label><span>Inches</span><input type="number" name="lengthInches" min="0" max="11" step="1" placeholder="5"></label>
-      <label><span>Fraction</span><input type="text" name="lengthFraction" placeholder="1/2" inputmode="decimal"></label>
+      <label><span>Fraction</span><input type="text" name="lengthFraction" placeholder="1/2" inputmode="text" autocomplete="off"></label>
     </div>
     <small>Diagonal length</small>
   </div>

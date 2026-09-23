@@ -60,6 +60,15 @@ function setRafterFields(mode){
   pitch:[f.pitch],
   length:[f.lengthFeet,f.lengthInches,f.lengthFraction]
  };
+ const showGroup=(fields,visible)=>{
+  const field=fields.find(Boolean);
+  const group=field&&field.closest(".measurement-group");
+  if(group)group.hidden=!visible;
+ };
+ showGroup(groups.run,mode==="runrise"||mode==="pitchrun");
+ showGroup(groups.rise,mode==="runrise"||mode==="pitchrise");
+ showGroup(groups.pitch,mode!=="runrise");
+ showGroup(groups.length,mode==="pitchlength");
  Object.values(groups).forEach(fields=>fields.forEach(el=>{if(el){el.disabled=false;el.required=false}}));
  const disable=(names)=>names.forEach(n=>{const fields=groups[n]||[];fields.forEach(el=>{if(el){el.disabled=true}})});
  if(mode==="runrise"){disable(["pitch","length"]);groups.run.forEach(el=>{if(el)el.required=true});groups.rise.forEach(el=>{if(el)el.required=true})}
