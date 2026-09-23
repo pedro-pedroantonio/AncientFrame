@@ -17,10 +17,40 @@
 <label><input type="radio" name="mode" value="pitchlength"><span>Pitch + Rafter</span></label>
 </div>
 <div id="rafterInputs" class="input-grid">
-<label>Run<input name="run" placeholder="12' 0&quot;" inputmode="decimal"><small>Horizontal distance</small></label>
-<label>Rise<input name="rise" placeholder="8' 0&quot;" inputmode="decimal"><small>Vertical distance</small></label>
-<label>Pitch<input name="pitch" placeholder="8/12" inputmode="decimal"><small>Example: 8/12 or 0.6667/12</small></label>
-<label>Rafter length<input name="length" placeholder="14' 5 1/2&quot;" inputmode="decimal"><small>Diagonal length</small></label>
+  <div class="measurement-group">
+    <label class="field-label">Run</label>
+    <div class="dimension-fields">
+      <label><span>Feet</span><input type="number" name="runFeet" min="0" step="1" placeholder="12"></label>
+      <label><span>Inches</span><input type="number" name="runInches" min="0" max="11" step="1" placeholder="0"></label>
+      <label><span>Fraction</span><input type="text" name="runFraction" placeholder="1/2" inputmode="decimal"></label>
+    </div>
+    <small>Horizontal distance</small>
+  </div>
+  <div class="measurement-group">
+    <label class="field-label">Rise</label>
+    <div class="dimension-fields">
+      <label><span>Feet</span><input type="number" name="riseFeet" min="0" step="1" placeholder="8"></label>
+      <label><span>Inches</span><input type="number" name="riseInches" min="0" max="11" step="1" placeholder="0"></label>
+      <label><span>Fraction</span><input type="text" name="riseFraction" placeholder="1/2" inputmode="decimal"></label>
+    </div>
+    <small>Vertical distance</small>
+  </div>
+  <div class="measurement-group">
+    <label class="field-label">Pitch</label>
+    <div class="dimension-fields single-field">
+      <label class="full-width"><span>Ratio</span><input type="text" name="pitch" placeholder="8/12" inputmode="decimal"></label>
+    </div>
+    <small>Example: 8/12</small>
+  </div>
+  <div class="measurement-group">
+    <label class="field-label">Rafter length</label>
+    <div class="dimension-fields">
+      <label><span>Feet</span><input type="number" name="lengthFeet" min="0" step="1" placeholder="14"></label>
+      <label><span>Inches</span><input type="number" name="lengthInches" min="0" max="11" step="1" placeholder="5"></label>
+      <label><span>Fraction</span><input type="text" name="lengthFraction" placeholder="1/2" inputmode="decimal"></label>
+    </div>
+    <small>Diagonal length</small>
+  </div>
 </div>
 <button class="button" type="submit">Calculate rafter <span>→</span></button>
 <div id="rafterError" class="form-error" role="alert"></div>

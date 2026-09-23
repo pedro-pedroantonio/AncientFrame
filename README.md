@@ -15,6 +15,18 @@ AncientFrame is designed around a simple principle:
 
 This project is not a framework application. It is a pure HTML, CSS, and JavaScript website with no build step, package manager, or server-side runtime required.
 
+## Measurement rule
+
+All dimensions entered into the application and all displayed results must use the framing convention of feet, inches, and fractional inches.
+
+Accepted examples include:
+- 12' 0"
+- 12' 0 1/8"
+- 8' 6 1/2"
+- 1 3/16"
+
+Do not use decimal-foot-only input as the primary measurement format for the site. Fractional inches are part of the standard field measurement language for carpenters, framers, and builders.
+
 ## Key features
 
 - Rafter calculator with multiple modes
@@ -283,6 +295,10 @@ AncientFrame performs standard geometry calculations and displays rounded result
 - final layout should be checked against plans, site conditions, and building code requirements
 
 This tool is intended to support decision-making and layout planning, not replace professional engineering review or project-specific verification.
+
+## Language support
+
+The project is designed to support both English and Spanish versions of the user-facing interface and documentation. Any user-visible copy added to the site should be mirrored in Spanish when the feature is shipped or updated.
 
 ## Deployment and configuration
 
